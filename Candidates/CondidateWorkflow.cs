@@ -10,7 +10,7 @@ namespace Domen.Candidates
 {
     public class CondidateWorkflow
     {
-        public CandidateWorkflow(Status status,
+        public CondidateWorkflow(Status status,
            IReadOnlyCollection<CandidateWorkflowStep> steps)
         {
             Status = status;
@@ -21,9 +21,9 @@ namespace Domen.Candidates
         public string? Feedback { get; private set; }
         public IReadOnlyCollection<CandidateWorkflowStep> Steps { get; init; }
 
-        public static CandidateWorkflow Create(VacancyWorkflow vacancyWorkflow)
+        public static CondidateWorkflow Create(VacancyWorkflow vacancyWorkflow)
         {
-            return new CandidateWorkflow(Status.InProcessing, new List<CandidateWorkflowStep>(vacancyWorkflow.Steps.Select(CandidateWorkflowStep.Create)));
+            return new CondidateWorkflow(Status.InProcessing, new List<CandidateWorkflowStep>(vacancyWorkflow.Steps.Select(CandidateWorkflowStep.Create)));
         }
 
         public void Approve(Employee employee, string feedback)

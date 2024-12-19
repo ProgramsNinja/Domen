@@ -7,10 +7,10 @@ using Domen;
 
 namespace Domen.Candidates
 {
-    internal class Candidate
+    public class Candidate
     {
         public Candidate(Guid id, Guid? referralId,
-            CandidateWorkflow workflow, CandidateDocument document)
+            CondidateWorkflow workflow, CandidateDocuments document)
         {
             Id = id;
             ReferralId = referralId;
@@ -21,11 +21,11 @@ namespace Domen.Candidates
         public Guid Id { get; init; }
         public Guid VacancyId { get; private set; }
         public Guid? ReferralId { get; private set; }
-        public CandidateWorkflow Workflow { get; private set; }
-        public CandidateDocument Document { get; private set; }
+        public CondidateWorkflow Workflow { get; private set; }
+        public CandidateDocuments Document { get; private set; }
 
-        public static Candidate Create(CandidateDocument document,
-            Guid? referralId, CandidateWorkflow workflow)
+        public static Candidate Create(CandidateDocuments document,
+            Guid? referralId, CondidateWorkflow workflow)
         {
             if (document == null) throw new ArgumentNullException(nameof(document));
             if (workflow == null) throw new ArgumentNullException(nameof(workflow));

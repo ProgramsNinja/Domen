@@ -17,9 +17,9 @@ namespace Domen.Vacancies
             Name = name ?? throw new ArgumentNullException(nameof(name));
             Steps = steps ?? throw new ArgumentNullException(nameof(steps));
         }
-        public CandidateWorkflow Create()
+        public CondidateWorkflow Create()
         {
-            return CandidateWorkflow.Create(this);
+            return CondidateWorkflow.Create(this);
         }
     }
 }

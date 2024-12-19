@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domen.Candidates
 {
-    internal class CandidateDocuments
+    public class CandidateDocuments
     {
         public string Name { get; private set; }
         public string WorkExperience { get; private set; }
