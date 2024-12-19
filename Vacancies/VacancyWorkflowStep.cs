@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domen.Vacancies
 {
-    internal class VacancyWorkflowStep
+    public class VacancyWorkflowStep
     {
     }
 }
