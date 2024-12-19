@@ -21,9 +21,9 @@ namespace Domen.Vacancies
             Workflow = workflow ?? throw new ArgumentNullException(nameof(workflow));
         }
 
-        public Candidate Create(CandidateDocuments document, Guid? referralId)
+        public Candidate Create(CandidateDocuments document, Guid? referralId, CondidateWorkflow workflow)
         {
-            return Candidate.Create(document, referralId);
+            return Candidate.Create(document, referralId,workflow);
         }
     }
 }
