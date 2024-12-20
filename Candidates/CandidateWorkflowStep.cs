@@ -45,11 +45,16 @@ namespace Domen.Candidates
 
         public void Approve(Employee employee, string feedback)
         {
-            ArgumentNullException.ThrowIfNull(nameof(employee));
+            ArgumentNullException.ThrowIfNull(employee, nameof(employee));
 
             if (string.IsNullOrEmpty(feedback))
             {
                 throw new ArgumentNullException(nameof(feedback));
+            }
+
+            if (UserId == null && RoleId == null)
+            {
+                throw new InvalidOperationException("Невозможно одобрить шаг, так как ни UserId, ни RoleId не установлены.");
             }
 
             Status = Status.Approved;
@@ -58,17 +63,21 @@ namespace Domen.Candidates
 
         public void Reject(Employee employee, string feedback)
         {
-            ArgumentNullException.ThrowIfNull(nameof(employee));
+            ArgumentNullException.ThrowIfNull(employee, nameof(employee));
 
             if (string.IsNullOrEmpty(feedback))
             {
                 throw new ArgumentNullException(nameof(feedback));
             }
 
+            if (UserId == null && RoleId == null)
+            {
+                throw new InvalidOperationException("Невозможно отклонить шаг, так как ни UserId, ни RoleId не установлены.");
+            }
+
             Status = Status.Rejected;
             Feedback = feedback;
         }
-
 
         public void Restart()
         {
