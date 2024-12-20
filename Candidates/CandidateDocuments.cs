@@ -10,5 +10,21 @@ namespace Domen.Candidates
     {
         public string Name { get; private set; }
         public string WorkExperience { get; private set; }
+
+        public CandidateDocuments(string name, string workExperience)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentException("Name cannot be null or empty.", nameof(name));
+            }
+
+            if (string.IsNullOrWhiteSpace(workExperience))
+            {
+                throw new ArgumentException("WorkExperience cannot be null or empty.", nameof(workExperience));
+            }
+
+            Name = name;
+            WorkExperience = workExperience;
+        }
     }
 }
