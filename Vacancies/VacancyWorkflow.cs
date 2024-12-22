@@ -9,17 +9,17 @@ namespace Domen.Vacancies
 {
     public class VacancyWorkflow
     {
-        public string Name { get; private set; }
-        public IReadOnlyCollection<VacancyWorkflowStep> Steps { get; private set; }
-
-        public VacancyWorkflow(string name, IReadOnlyCollection<VacancyWorkflowStep> steps)
+        private VacancyWorkflow(IReadOnlyCollection<VacancyWorkflowStep> steps)
         {
-            Name = name ?? throw new ArgumentNullException(nameof(name));
             Steps = steps ?? throw new ArgumentNullException(nameof(steps));
         }
-        public CondidateWorkflow Create()
-        {
-            return CondidateWorkflow.Create(this);
-        }
+
+        public IReadOnlyCollection<VacancyWorkflowStep> Steps { get; private set; }
+
+        public static VacancyWorkflow Create(IReadOnlyCollection<VacancyWorkflowStep> steps)
+            => new VacancyWorkflow(steps);
+
+        public CаndidateWorkflow ToCandidate()
+            => CаndidateWorkflow.Create(Steps.Select(step => step.ToCandidate()).ToArray());
     }
 }

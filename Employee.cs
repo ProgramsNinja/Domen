@@ -8,7 +8,7 @@ namespace Domen
 {
     public class Employee
     {
-        private Employee(Guid id, string name, Guid companyId, Guid roleId)
+        public Employee(Guid id, string name, Guid companyId, Guid roleId)
         {
             Id = id;
             Name = name;
@@ -23,7 +23,21 @@ namespace Domen
 
         public static Employee Create(string name, Guid roleId, Guid companyId)
         {
-            ArgumentNullException.ThrowIfNull(name);
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentException("Имя не может быть пустым или состоять только из пробелов.", nameof(name));
+            }
+
+            if (roleId == Guid.Empty)
+            {
+                throw new ArgumentException("RoleId не может быть пустым.", nameof(roleId));
+            }
+
+            if (companyId == Guid.Empty)
+            {
+                throw new ArgumentException("CompanyId не может быть пустым.", nameof(companyId));
+            }
+
             return new Employee(new Guid(), name, companyId, roleId);
         }
     }

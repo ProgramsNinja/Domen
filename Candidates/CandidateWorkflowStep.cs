@@ -12,7 +12,7 @@ namespace Domen.Candidates
     public class CandidateWorkflowStep
     {
         public CandidateWorkflowStep(Guid? userId, Guid? roleId,
-            string description, Status status, int stepNumber)
+             Status status, int stepNumber, string feedback)
         {
             if (userId != null && roleId != null)
             {
@@ -21,31 +21,43 @@ namespace Domen.Candidates
 
             UserId = userId;
             RoleId = roleId;
-            Description = description ?? throw new ArgumentNullException(nameof(description));
             Status = status;
             StepNumber = stepNumber;
+            Feedback = feedback;
         }
 
-        public Guid? UserId { get; private init; }
-        public Guid? RoleId { get; private init; }
-        public string Description { get; private set; }
+        public Guid? UserId { get; private set; }
+        public Guid? RoleId { get; private set; }
         public Status Status { get; private set; }
-        public string? Feedback { get; private set; }
+        public string Feedback { get; private set; }
         public int StepNumber { get; private set; }
 
-        public static CandidateWorkflowStep Create(VacancyWorkflowStep vacancyWorkflowStep)
+        public static CandidateWorkflowStep Create(Guid? userId, Guid? roleId, int stepnumber)
         {
-            if (vacancyWorkflowStep.UserId != null && vacancyWorkflowStep.RoleId != null)
+            if (stepnumber <= 0)
             {
-                throw new ArgumentException("UserId и RoleId не могут быть указаны одновременно.");
+                throw new ArgumentOutOfRangeException(nameof(stepnumber), "Номер шага должен быть больше нуля.");
             }
 
-            return new CandidateWorkflowStep(vacancyWorkflowStep.UserId, vacancyWorkflowStep.RoleId, vacancyWorkflowStep.Description, Status.InProcessing, vacancyWorkflowStep.StepNumber);
+            return new CandidateWorkflowStep(
+                userId,
+                roleId,
+                Status.InProcessing,
+                stepnumber,
+                feedback: null);
         }
 
         public void Approve(Employee employee, string feedback)
         {
-            ArgumentNullException.ThrowIfNull(employee, nameof(employee));
+            if (employee == null)
+            {
+                throw new ArgumentNullException(nameof(employee), "Пользователь не может быть null.");
+            }
+
+            if (string.IsNullOrWhiteSpace(feedback))
+            {
+                throw new ArgumentException("Обратная связь не может быть пустой или состоять из пробелов.", nameof(feedback));
+            }
 
             if (string.IsNullOrEmpty(feedback))
             {
@@ -63,7 +75,15 @@ namespace Domen.Candidates
 
         public void Reject(Employee employee, string feedback)
         {
-            ArgumentNullException.ThrowIfNull(employee, nameof(employee));
+            if (employee == null)
+            {
+                throw new ArgumentNullException(nameof(employee), "Пользователь не может быть null.");
+            }
+
+            if (string.IsNullOrWhiteSpace(feedback))
+            {
+                throw new ArgumentException("Обратная связь не может быть пустой или состоять из пробелов.", nameof(feedback));
+            }
 
             if (string.IsNullOrEmpty(feedback))
             {
@@ -83,6 +103,18 @@ namespace Domen.Candidates
         {
             Status = Status.Restarted;
             Feedback = null;
+        }
+        private void ValidateStatusChange(Employee employee)
+        {
+            if (Status != Status.InProcessing)
+            {
+                throw new InvalidOperationException("Статус может быть изменён только, если он находится в обработке.");
+            }
+
+            if (employee.Id != UserId && employee.RoleId != RoleId)
+            {
+                throw new UnauthorizedAccessException("Пользователь не имеет прав на изменение статуса этого шага.");
+            }
         }
     }
 }

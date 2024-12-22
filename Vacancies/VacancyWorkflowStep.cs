@@ -9,14 +9,43 @@ namespace Domen.Vacancies
 {
     public class VacancyWorkflowStep
     {
-        public Guid UserId { get; private set; }
-        public Guid RoleId { get; private set; }
+        private VacancyWorkflowStep(Guid? userId, Guid? roleId, string description, int stepNumber)
+        {
+            if (userId is null && roleId is null)
+            {
+                throw new ArgumentException("Должен быть указан либо UserId, либо RoleId.");
+            }
+
+            if (description == null)
+            {
+                throw new ArgumentException("Описание не должно быть пустым.");
+            }
+           
+
+
+            UserId = userId;
+            RoleId = roleId;
+            Description = description;
+            StepNumber = stepNumber;
+        }
+
+        public Guid? UserId { get; private set; }
+        public Guid? RoleId { get; private set; }
         public string Description { get; private set; }
         public int StepNumber { get; private set; }
 
-        public CandidateWorkflowStep Create()
+
+        public static VacancyWorkflowStep Create(Guid? userId, Guid? roleId, string description, int stepNumber)
         {
-            return CandidateWorkflowStep.Create(this);
+            if (stepNumber <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(stepNumber));
+            }
+
+            return new VacancyWorkflowStep(userId, roleId, description, stepNumber);
         }
+
+        public CandidateWorkflowStep ToCandidate()
+            =>CandidateWorkflowStep.Create(UserId, RoleId, StepNumber);
     }
 }
