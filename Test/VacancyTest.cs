@@ -55,7 +55,7 @@ namespace Test
             var description = "Описание вакансии";
             var step = VacancyWorkflowStep.Create(Guid.NewGuid(), Guid.NewGuid(), description, 1);
             var workflow = VacancyWorkflow.Create(new[] { step });
-            var candidateDocument = new CandidateDocument();
+            var candidateDocument = new CandidateDocument("Димас","20 лет на заводе");
             var referralId = Guid.NewGuid();
 
             var vacancy = Vacancy.Create(companyId, description, workflow);

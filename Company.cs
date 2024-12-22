@@ -21,8 +21,10 @@ namespace Domen
 
         public Company Create(string name, string description)
         {
-            ArgumentNullException.ThrowIfNull(name);
-            ArgumentNullException.ThrowIfNull(description);
+            if (name == null) 
+                throw new ArgumentNullException(nameof(name));
+            if (description == null) 
+                throw new ArgumentNullException(nameof(description));
 
             var company = new Company(new Guid(), name, description);
 

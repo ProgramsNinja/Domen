@@ -12,8 +12,10 @@ namespace Domen.Vacancies
 
         private Vacancy(Guid id, Guid companyId, string description, VacancyWorkflow workflow)
         {
-            ArgumentNullException.ThrowIfNull(description, nameof(description));
-            ArgumentNullException.ThrowIfNull(workflow, nameof(workflow));
+            if (description == null) 
+                throw new ArgumentNullException(nameof(description));
+            if (workflow == null) 
+                throw new ArgumentNullException(nameof(workflow));
 
             Id = id;
             CompanyId = companyId;
@@ -22,14 +24,14 @@ namespace Domen.Vacancies
         }
 
         public Guid Id { get; private set; }
-        public Guid CompanyId { get; private init; }
-        public string Description { get; private init; }
-        public VacancyWorkflow Workflow { get; private init; }
+        public Guid CompanyId { get; private set; }
+        public string Description { get; private set; }
+        public VacancyWorkflow Workflow { get; private set; }
 
         public static Vacancy Create(Guid companyId, string description, VacancyWorkflow workflow)
             => new(Guid.NewGuid(), companyId, description, workflow);
 
         public Candidate CreateCandidate(CandidateDocument candidateDocument, Guid? referralId)
-            => Candidate.Create(Id, referralId, candidateDocument, Workflow.ToCandidate());
+            => Candidate.Create( candidateDocument, referralId, Workflow.ToCandidate());
     }
 }
