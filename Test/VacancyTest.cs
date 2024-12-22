@@ -15,7 +15,7 @@ namespace Test
         public void Create_ValidParameters_ReturnsVacancy()
         {
             var companyId = Guid.NewGuid();
-            var description = "Требуется разработчик для работы в DEX";
+            var description = "Разработчик";
             var step = VacancyWorkflowStep.Create(Guid.NewGuid(), Guid.NewGuid(), description, 1);
             var workflow = VacancyWorkflow.Create(new[] { step });
 
